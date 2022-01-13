@@ -1,0 +1,124 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
+apply plugin: 'maven-publish'
+android {
+    compileSdk 32
+
+    defaultConfig {
+        minSdk 21
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+//编译发布到maven
+task deployToMaven{
+    dependsOn(tasks.clean)
+    dependsOn(tasks.build)
+    dependsOn(tasks.publish)
+    tasks.preBuild.mustRunAfter(tasks.clean)
+
+    //tasks.generatePomFileForMavenPublication.mustRunAfter(tasks.build)
+}
+publishing {
+    //加载本地文件
+//    Properties properties = new Properties()
+//    properties.load(project.rootProject.file('mavenpublish.properties')
+//            .newDataInputStream())
+
+    def projectName = project.getName()
+//    def groupIdString = properties.getProperty("${projectName}_group_id")//"${VERSION_NAME}"//"1.6.2-SNAPSHOT"//"1.6.2"//
+//    println "properties groupIdString = $groupIdString"
+
+    def versionString = '1.0'//"1.0-SNAPSHOT"//
+
+    publications {
+
+        println "projectName = $projectName " +
+                "\n buildDir = $buildDir "
+
+        maven(MavenPublication) {
+            //公司域名
+            groupId = 'com.example.mavenpublishmultiplechannel'
+            //该aar包的名称
+            artifactId = 'mavenpublishmultiplechannel'
+            //版本号
+            version = versionString //"1.6.2-SNAPSHOT"//'1.6.2-SNAPSHOT'
+
+            artifact "mavenpublish_multipleChannel.gradle"
+
+//            pom.withXml{
+//                def dependenciesNode = asNode().appendNode("dependencies")
+//                configurations.implementation.allDependencies.forEach(){
+//                    Dependency dependency ->
+//                        if (dependency.version != "unspecified" && dependency.name != "unspecified"){
+//                            def dependencyNode = dependenciesNode.appendNode('dependency')
+//                            dependencyNode.appendNode('groupId', dependency.group)
+//                            dependencyNode.appendNode('artifactId', dependency.name)
+//                            dependencyNode.appendNode('version', dependency.version)
+//                        }
+//                }
+//            }
+            //from components.java
+        }
+    }
+    repositories {
+
+        // 本地仓库位于USER_HOME/.m2/repository
+        mavenLocal()
+        // 其他maven仓库
+        maven { url uri('../repository') }
+        maven {
+            // change to point to your repo, e.g. http://my.org/repo
+            url = "$buildDir/repo"
+        }
+
+        maven {
+            allowInsecureProtocol = true
+
+            // 凭证
+            credentials {
+                username 'admin' // 仓库发布用户名
+                password 'admin123' // 仓库发布用户密码
+            }
+            // 地址
+            if(versionString.endsWith("-SNAPSHOT")){
+                println "快照版本发布任务，SNAPSHOT task is running"
+                url "$REPOS_URL_SNAPSHOT"//'http://localhost:8082/repository/repos0-snapshot/'
+            }else {
+                println "非快照版本发布任务，not SNAPSHOT task is running"
+                url "${REPOS_URL}"//'http://localhost:8082/repository/repos0/'
+            }
+            //👇这是一个本地仓库地址即D盘的maventestrepository文件夹，可以用来测试发布aar包，发布之后的aar将存放于该地址
+            //url = "file://d:/maventestrepository"
+        }
+    }
+}
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.3.0'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}

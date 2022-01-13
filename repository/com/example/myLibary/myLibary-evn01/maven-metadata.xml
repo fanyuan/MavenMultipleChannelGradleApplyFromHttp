@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>com.example.myLibary</groupId>
+  <artifactId>myLibary-evn01</artifactId>
+  <versioning>
+    <latest>1.3-SNAPSHOT</latest>
+    <versions>
+      <version>1.3-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20220113053209</lastUpdated>
+  </versioning>
+</metadata>

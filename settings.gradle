@@ -1,0 +1,24 @@
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        jcenter() // Warning: this repository is going to shut down soon
+
+        maven {
+            allowInsecureProtocol(true)
+            url 'http://localhost:8082/repository/repos0/'//html to see 'http://localhost:8082/service/rest/repository/browse/repos0/'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://localhost:8082/repository/repos0-snapshot/'//html to see 'http://localhost:8082/service/rest/repository/browse/repos0/'
+        }
+    }
+
+}
+rootProject.name = "MavenMultipleChannelGradleApplyFromHttp"
+include ':app'
+include ':myLibary'
+include ':librarySample'
+include ':librarySingleChannel'
+include ':mavenpublishMultipleChannel'
