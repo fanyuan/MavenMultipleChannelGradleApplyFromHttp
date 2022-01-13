@@ -12,6 +12,9 @@ publishing {
     println "properties versionString = $versionString"
     //    myLibary_group_id = com.example.myapplication
     def groupIdString = properties.getProperty("${projectName}_group_id")//"${VERSION_NAME}"//"1.6.2-SNAPSHOT"//"1.6.2"//
+//    if(versionString.endsWith("-SNAPSHOT")){
+//        groupIdString = "${groupIdString}.snapshot"
+//    }
     println "properties groupIdString = $groupIdString"
     //    myLibary_artifact_id = myLibary
     def artifactIdString = properties.getProperty("${projectName}_artifact_id")//"${VERSION_NAME}"//"1.6.2-SNAPSHOT"//"1.6.2"//
