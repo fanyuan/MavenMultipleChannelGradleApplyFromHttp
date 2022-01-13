@@ -3,8 +3,8 @@ plugins {
     id 'kotlin-android'
 }
 //apply from: 'mavenpublish_singleChannel.gradle'
-//apply from: this.rootProject.file('mavenpublish_singleChannel.gradle')
-apply from: "http://localhost:8082/repository/repos0/com/example/mavenpublishmultiplechannel/mavenpublishmultiplechannel/1.0/mavenpublishmultiplechannel-1.0.gradle"
+apply from: this.rootProject.file('mavenpublish_singleChannel.gradle')
+//apply from: "http://localhost:8082/repository/repos0/com/example/mavenpublishmultiplechannel/mavenpublishmultiplechannel/1.0/mavenpublishmultiplechannel-1.0.gradle"
 android {
     compileSdk 32
 
